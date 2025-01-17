@@ -54,13 +54,8 @@ public class LibraryFacade {
         bookService.deleteBook(id);
     }
 
-    public Book addBookWithCategory(Book book, String categoryName) {
-        Category category = categoryService.getCategoryByName(categoryName);
-        if (category == null) {
-            category = categoryService.addCategory(new Category(null, categoryName));
-        }
-        book.setCategory(category.getName());
-        return bookService.addBook(book);
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
     }
 
     public List<Book> getBooksByCategory(String categoryName) {
@@ -70,8 +65,13 @@ public class LibraryFacade {
                 .collect(Collectors.toList());
     }
 
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+    public Book addBookWithCategory(Book book, String categoryName) {
+        Category category = categoryService.getCategoryByName(categoryName);
+        if (category == null) {
+            category = categoryService.addCategory(new Category(null, categoryName));
+        }
+        book.setCategory(category.getName());
+        return bookService.addBook(book);
     }
 
     public BookDecorator markBookAsFeatured(Long bookId) {
