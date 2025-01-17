@@ -64,7 +64,7 @@ public class LibraryController {
     }
 
     @Operation(summary = "Get books by category", description = "Retrieve all books belonging to a specific category")
-    @GetMapping("/books/category")
+    @GetMapping("/category")
     public List<BookDto> getBooksByCategory(@RequestParam String category) {
         return libraryFacade.getBooksByCategory(category)
                 .stream()
