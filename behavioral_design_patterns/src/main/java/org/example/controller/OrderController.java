@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.models.Item;
 import org.example.models.Order;
 import org.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,39 +28,40 @@ public class OrderController {
         }
     }
 
-    // Read all orders
-//    @GetMapping
-//    public ResponseEntity<List<Order>> getAllOrders() {
-//        List<Order> orders = orderService.findAllOrders();
-//        return ResponseEntity.ok(orders);
-//    }
-//
-//    // Read a single order by ID
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-//        Optional<Order> order = orderService.findOrderById(id);
-//        return order.map(ResponseEntity::ok)
-//                .orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // Update an existing order
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
-//        Optional<Order> updatedOrder = orderService.updateOrder(id, orderDetails);
-//        return updatedOrder.map(ResponseEntity::ok)
-//                .orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // Delete an order
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
-//        boolean isDeleted = orderService.deleteOrder(id);
-//        if (isDeleted) {
-//            return ResponseEntity.ok().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    // Cancel an order
+    @PutMapping("/{orderId}/cancel")
+    public ResponseEntity<String> cancelOrder(@PathVariable Long orderId) {
+        try {
+            orderService.cancelOrder(orderId);
+            return ResponseEntity.ok("Order canceled successfully!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error canceling order: " + e.getMessage());
+        }
+    }
+
+    // Get the status of an order
+    @GetMapping("/{orderId}/status")
+    public ResponseEntity<String> getOrderStatus(@PathVariable Long orderId) {
+        try {
+            String status = orderService.getOrderStatus(orderId);
+            return ResponseEntity.ok("Order status: " + status);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error fetching order status: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/items")
+    public ResponseEntity<List<Item>> getAllItems() {
+        List<Item> items = orderService.getAllItems();
+        return ResponseEntity.ok(items);
+    }
+
+    // Get all orders
+    @GetMapping("/all")
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
 
 
 }

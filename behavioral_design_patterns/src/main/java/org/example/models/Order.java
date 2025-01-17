@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.repository.OrderRepository;
 
 @Data
 @NoArgsConstructor
@@ -22,8 +23,9 @@ public class Order {
     private String notificationPreference;
 
 
-    public void updateStatus(String newStatus) {
+    public void updateStatus(String newStatus, OrderRepository orderRepository) {
         this.status = newStatus;
+        orderRepository.save(this);
         System.out.println("Order " + id + " status updated to: " + newStatus);
     }
 
